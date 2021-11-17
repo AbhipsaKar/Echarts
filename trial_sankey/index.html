@@ -1,0 +1,139 @@
+<html>
+<body>
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <!--D3.js-->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!--ECharts-->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+<div id="sankey_multiple" style="width: 900px; height: 300px;"></div>
+
+<script type="text/javascript">
+
+var url = "http://dev.spatialdatacapture.org:8871/attribute-count-by-star-rating/" + 'CO/' + 'Wifi/0/4';
+var chartDom = document.getElementById('sankey_multiple');
+var myChart = echarts.init(chartDom);
+
+ const dataset= new Map([
+        ["Has WiFi","No wifi"],
+        ["Accepts Credit Cards","No Credit Cards"],
+        ["Wheelchair Accessible","Not Wheelchair Accessible"],
+        ["Happy Hour","No Happy Hour"],
+        ["Has TV","No TV"],
+        ["Alcohol","No Alcohol"],
+        ["Caters","No catering"],
+        ["Provides TakeOut","No TakeOut"],
+        ["Delivery","No delivery"],
+    ]);
+  const Rating = ['1 star rating','2 star rating','3 star rating','4 star rating','5 star rating'] ;
+  var count;
+  $.getJSON(url, function (data) {
+        $.each(data[0], function (key, val) {
+               count = val;
+        
+        });
+      });
+      console.log("count is ",count);
+var index=0;
+var option = {
+  series: {
+    type: 'sankey',
+    layout: 'none',
+    emphasis: {
+      focus: 'adjacency'
+    },
+    data: [
+      {
+        name: Array.from(dataset.values())[index],
+        level: 0,
+      },
+      {
+        name: Array.from(dataset.keys())[index],
+        level: 0,
+      },
+      {
+        name: Rating[0],
+        level: 1,
+      },
+      {
+        name: Rating[1],
+        level: 1,
+      },
+      {
+        name: Rating[2],
+        level: 1,
+      },
+      {
+        name: Rating[3],
+        level: 1,
+      },
+      {
+        name: Rating[4],
+        level: 1,
+      }
+    ],
+    links: [
+      {
+        source: 'No wifi',
+        target: '1 star rating',
+        value: 5
+      },
+      {
+        source: 'No wifi',
+        target: '2 star rating',
+        value: 2
+      },
+      {
+        source: 'No wifi',
+        target: '3 star rating',
+        value: 5
+      },
+      {
+        source: 'No wifi',
+        target: '4 star rating',
+        value: 6
+      },
+      {
+        source: 'No wifi',
+        target: '5 star rating',
+        value: 5
+      },
+      {
+        source: 'Has WiFi',
+        target: '1 star rating',
+        value: 5
+      },
+      {
+        source: 'Has WiFi',
+        target: '2 star rating',
+        value: 2
+      },
+      {
+        source: 'Has WiFi',
+        target: '3 star rating',
+        value: 5
+      },
+      {
+        source: 'Has WiFi',
+        target: '4 star rating',
+        value: 2
+      },
+      {
+        source: 'Has WiFi',
+        target: '5 star rating',
+        value: 5
+      },
+      
+      
+    ]
+  }
+};
+
+option && myChart.setOption(option);
+
+</script>
+</body>
+</html>
